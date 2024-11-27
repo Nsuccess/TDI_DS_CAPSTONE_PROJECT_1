@@ -16,8 +16,8 @@ jobs:
       # Step 2: Run the integration script
       - name: Run data integration script
         run: |
-          chmod +x integrate.sh
-          ./integrate.sh
+          chmod +x integrate_data.sh
+          ./integrate_data.sh
 
       # Step 3: Push the updated data back to GitHub
       - name: Commit and push changes
