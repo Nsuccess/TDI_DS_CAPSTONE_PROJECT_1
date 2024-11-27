@@ -3,25 +3,27 @@ name: Automate Data Integration
 on:
   push:
     paths:
-      - 'data-hub/**'
+      - 'data-hub/**' # Only triggers when files in the data-hub folder change
 
 jobs:
   data_integration:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      # Step 1: Check out the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Run Data Integration Script
-      run: |
-        chmod +x integrate_data.sh
-        ./integrate_data.sh
+      # Step 2: Run the integration script
+      - name: Run data integration script
+        run: |
+          chmod +x integrate.sh
+          ./integrate.sh
 
-    - name: Commit and Push Updated Data
-      run: |
-        git config --global user.name "github-actions[bot]"
-        git config --global user.email "github-actions[bot]@users.noreply.github.com"
-        git add db/consolidated_data.csv
-        git commit -m "Automated update: Consolidated data"
-        git push
+      # Step 3: Push the updated data back to GitHub
+      - name: Commit and push changes
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add db/consolidated_data.csv
+          git commit -m "Update consolidated data"
+          git push
