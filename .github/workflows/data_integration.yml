@@ -13,13 +13,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Step 2: Ensure the script is executable and run it
+      # Step 2: Debug - Print the file structure
+      - name: List file structure
+        run: |
+          echo "Listing all files in the repository:"
+          tree  # Requires 'tree' command to be pre-installed in the runner
+          echo "Alternative structure (using ls):"
+          ls -R   # Recursive listing of files and directories
+
+      # Step 3: Ensure the script is executable and run it
       - name: Run data integration script
         run: |
-          chmod +x data_integration.sh  
-          ./data_integration.sh         
+          chmod +x data_integration.sh  # Make the script executable
+          ./data_integration.sh         # Run the script from the cloned repo
 
-      # Step 3: Commit and push changes to GitHub
+      # Step 4: Commit and push changes to GitHub
       - name: Commit and push changes
         run: |
           git config user.name "GitHub Actions"
