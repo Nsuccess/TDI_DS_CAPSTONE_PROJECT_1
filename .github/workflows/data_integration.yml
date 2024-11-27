@@ -1,3 +1,4 @@
+# .github/workflows/data_integration.yml
 name: Automate Data Integration
 
 on:
@@ -13,13 +14,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Step 2: Run the integration script
+      # Step 2: Run the integration script (use the correct script name)
       - name: Run data integration script
         run: |
-          chmod +x data_integration.sh
-          ./data_integration.sh
+          chmod +x integrate_data.sh
+          ./integrate_data.sh
 
-      # Step 3: Commit and push changes
+      # Step 3: Commit and push the updated data back to GitHub
       - name: Commit and push changes
         run: |
           git config user.name "GitHub Actions"
