@@ -3,7 +3,7 @@ name: Automate Data Integration
 on:
   push:
     paths:
-      - 'data-hub/**'  # Only triggers when files in the data-hub folder change
+      - 'data-hub/**'  # Trigger only when files in the 'data-hub' folder change
 
 jobs:
   data_integration:
@@ -13,13 +13,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Step 2: Run the integration script with the full path
+      # Step 2: Debug - List files and directories
+      - name: Check file structure
+        run: |
+          echo "Checking file structure before running the script..."
+          ls -lh
+          echo "Listing files in subdirectories:"
+          ls -lh .github
+          ls -lh data-hub
+          ls -lh db || echo "db folder not found"
+
+      # Step 3: Ensure the script is executable and run it
       - name: Run data integration script
         run: |
-          chmod +x /mnt/c/Users/NewUserName/Desktop/Capstone_Project/integrate_data.sh
-          /mnt/c/Users/NewUserName/Desktop/Capstone_Project/integrate_data.sh
+          chmod +x integrate_data.sh  # Ensure the script is executable
+          ./integrate_data.sh         # Execute the script
 
-      # Step 3: Commit and push the updated data back to GitHub
+      # Step 4: Commit and push the updated data back to GitHub
       - name: Commit and push changes
         run: |
           git config user.name "GitHub Actions"
