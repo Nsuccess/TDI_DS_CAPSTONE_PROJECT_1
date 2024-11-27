@@ -3,7 +3,7 @@ name: Automate Data Integration
 on:
   push:
     paths:
-      - 'data-hub/**' # Only triggers when files in the data-hub folder change
+      - 'data-hub/**'  # Only triggers when files in the data-hub folder change
 
 jobs:
   data_integration:
@@ -16,10 +16,10 @@ jobs:
       # Step 2: Run the integration script
       - name: Run data integration script
         run: |
-          chmod +x integrate_data.sh
-          ./integrate_data.sh
+          chmod +x data_integration.sh
+          ./data_integration.sh
 
-      # Step 3: Push the updated data back to GitHub
+      # Step 3: Commit and push changes
       - name: Commit and push changes
         run: |
           git config user.name "GitHub Actions"
