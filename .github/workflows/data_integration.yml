@@ -13,8 +13,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Step 2: Debug - List files and directories
-      - name: Check file structure
+      # Step 2: Debug - Check file structure
+      - name: List file structure
         run: |
           echo "Checking file structure before running the script..."
           ls -lh
@@ -27,7 +27,7 @@ jobs:
       - name: Run data integration script
         run: |
           chmod +x integrate_data.sh  # Ensure the script is executable
-          ./integrate_data.sh         # Execute the script
+          ./integrate_data.sh         # Run the script from the cloned repo
 
       # Step 4: Commit and push the updated data back to GitHub
       - name: Commit and push changes
