@@ -15,11 +15,7 @@ jobs:
 
       # Step 2: Debug - Print the file structure
       - name: List file structure
-        run: |
-          echo "Listing all files in the repository:"
-          tree  # Requires 'tree' command to be pre-installed in the runner
-          echo "Alternative structure (using ls):"
-          ls -R   # Recursive listing of files and directories
+        run: ls -lh
 
       # Step 3: Ensure the script is executable and run it
       - name: Run data integration script
