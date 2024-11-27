@@ -2,8 +2,7 @@ name: Automate Data Integration
 
 on:
   push:
-    paths:
-      - 'data-hub/**'  # Trigger only on changes to the 'data-hub' folder
+    branches: [main]
 
 jobs:
   data_integration:
