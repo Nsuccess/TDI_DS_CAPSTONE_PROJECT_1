@@ -2,7 +2,7 @@ name: Automate Data Integration
 
 on:
   push:
-    branches: [main]
+    branches: [master]
 
 jobs:
   data_integration:
