@@ -35,5 +35,4 @@ jobs:
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add .  # Stage all modified files
-          git commit -m "Update integrated data"
-          git push
+          git diff --cached --exit-code || (git commit -m "Update integrated data" && git push)  # Commit only if there are changes
