@@ -33,6 +33,6 @@ jobs:
       - name: Commit and push changes
         run: |
           git config user.name "Nsuccess"
-          git config user.email "successnwachukwu368@github.com"
+          git config user.email "successnwachukwu368@gmail.com"
           git add .  # Stage all modified files
           git diff --cached --exit-code || (git commit -m "Update integrated data" && git push)  # Commit only if there are changes
