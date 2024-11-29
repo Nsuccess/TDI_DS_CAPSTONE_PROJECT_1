@@ -20,27 +20,20 @@ jobs:
       # Step 3: Run integration script
       - name: Run data integration script
         run: |
-          echo "Ensuring integrate_data.sh is executable..."
           chmod +x integrate_data.sh
-          echo "Running integrate_data.sh..."
           ./integrate_data.sh
 
       # Step 4: Debug - Validate output
       - name: Validate consolidated file
         run: |
-          echo "Listing contents of the db folder..."
           ls -lh db/
-          echo "Previewing the first 5 rows of the consolidated data file..."
           head -n 5 db/integrated_data.csv
 
-      # Step 5: Commit and push changes
+      # Step 5: Commit and push changes (stage all modified files)
       - name: Commit and push changes
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          echo "Staging all changes..."
-          git add -A
-          echo "Committing changes..."
+          git add .  # Stage all modified files
           git commit -m "Update integrated data"
-          echo "Pushing changes..."
           git push
