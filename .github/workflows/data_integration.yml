@@ -29,10 +29,15 @@ jobs:
           ls -lh db/
           head -n 5 db/integrated_data.csv
 
-      # Step 5: Commit and push changes (stage all modified files)
+      # Step 5: Commit and push changes only if there are modifications
       - name: Commit and push changes
+        if: ${{ github.event_name == 'push' && github.event.head_commit != null }}  # Ensure changes were made
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub token for authentication
         run: |
-          git config user.name "Nsuccess"
-          git config user.email "successnwachukwu368@gmail.com"
+          git config --global user.email "successnwachukwu368@gmail.com"
+          git config --global user.name "Nsuccess"
+          
+          # Check for changes and commit only if there are modifications
           git add .  # Stage all modified files
-          git diff --cached --exit-code || (git commit -m "Update integrated data" && git push)  # Commit only if there are changes
+          git diff --cached --exit-code || (git commit -m "Update integrated data" && git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:master)
