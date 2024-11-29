@@ -32,7 +32,7 @@ jobs:
       # Step 5: Commit and push changes (stage all modified files)
       - name: Commit and push changes
         run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
+          git config user.name "Nsuccess"
+          git config user.email "successnwachukwu368@github.com"
           git add .  # Stage all modified files
           git diff --cached --exit-code || (git commit -m "Update integrated data" && git push)  # Commit only if there are changes
