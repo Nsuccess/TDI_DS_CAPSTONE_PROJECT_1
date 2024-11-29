@@ -13,22 +13,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Step 2: Debug - List files and directories
-      - name: Check file structure
-        run: |
-          echo "Listing all files and folders in the repository:"
-          ls -lh
-          echo "Checking specific folders:"
-          ls -lh data-hub || echo "data-hub folder not found"
-          ls -lh db || echo "db folder not found"
+      # Step 2: Debug - List file structure
+      - name: List file structure
+        run: ls -lh
 
-      # Step 3: Ensure the script is executable and run it
+      # Step 3: Run integration script
       - name: Run data integration script
         run: |
           chmod +x integrate_data.sh
           ./integrate_data.sh
 
-      # Step 4: Commit and push changes
+      # Step 4: Debug - Validate output
+      - name: Validate consolidated file
+        run: |
+          ls -lh db/
+          head -n 5 db/integrated_data.csv
+
+      # Step 5: Commit and push changes
       - name: Commit and push changes
         run: |
           git config user.name "GitHub Actions"
