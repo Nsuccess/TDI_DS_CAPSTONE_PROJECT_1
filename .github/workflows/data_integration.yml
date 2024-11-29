@@ -1,0 +1,38 @@
+name: Automate Data Integration
+
+on:
+  push:
+    paths:
+      - 'data-hub/**'  # Trigger only when files in the 'data-hub' folder change
+
+jobs:
+  data_integration:
+    runs-on: ubuntu-latest
+    steps:
+      # Step 1: Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Debug - List files and directories
+      - name: Check file structure
+        run: |
+          echo "Listing all files and folders in the repository:"
+          ls -lh
+          echo "Checking specific folders:"
+          ls -lh data-hub || echo "data-hub folder not found"
+          ls -lh db || echo "db folder not found"
+
+      # Step 3: Ensure the script is executable and run it
+      - name: Run data integration script
+        run: |
+          chmod +x integrate_data.sh
+          ./integrate_data.sh
+
+      # Step 4: Commit and push changes
+      - name: Commit and push changes
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add db/integrated_data.csv
+          git commit -m "Update integrated data"
+          git push
