@@ -28,24 +28,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git config --global user.email "successnwachukwu368@gmail.com"  # Your updated email
-          git config --global user.name "Nsuccess"  # Your updated username
-
-          # Create a unique branch name with a timestamp
-          timestamp=$(date +'%Y%m%d%H%M%S')
-          branch_name="update-dataset-${timestamp}"
-          git checkout -b "${branch_name}"
-
-          # Stage and commit changes if there are any
-          git add db/dataset.csv
-          git diff --cached --exit-code || git commit -m "Updated db/dataset.csv after integration"
+          # Configure Git username and email
+          git config --global user.email "successnwachukwu368@gmail.com"  # Your email
+          git config --global user.name "Nsuccess"  # Your username
           
-          # Push the new branch and merge it into the main branch
-          git push origin "${branch_name}"
-          git checkout main
-          git merge --no-ff "${branch_name}"
+          # Stage all changes
+          git add .  # Stage all modified files
+          
+          # Check for changes and commit if any
+          git diff --cached --exit-code || git commit -m "Update integrated data"
+          
+          # Push changes to the main branch
           git push origin main
-
-          # Cleanup: Delete the temporary branch locally and remotely
-          git branch -d "${branch_name}"
-          git push origin --delete "${branch_name}"
