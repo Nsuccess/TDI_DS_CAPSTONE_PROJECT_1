@@ -13,30 +13,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Step 2: Debug - List file structure
-      - name: List file structure
-        run: ls -lh
-
-      # Step 3: Run integration script
+      # Step 2: Run integration script
       - name: Run data integration script
         run: |
           chmod +x integrate_data.sh
           ./integrate_data.sh
 
-      # Step 4: Commit and push changes if modified
+      # Step 3: Commit and push changes
       - name: Commit and push changes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Configure Git username and email
-          git config --global user.email "successnwachukwu368@gmail.com"  # Your email
-          git config --global user.name "Nsuccess"  # Your username
-          
-          # Stage all changes
-          git add .  # Stage all modified files
-          
-          # Check for changes and commit if any
-          git diff --cached --exit-code || git commit -m "Update integrated data"
-          
-          # Push changes to the main branch
-          git push origin main
+          git config --global user.email "successnwachukwu368@gmail.com"
+          git config --global user.name "Nsuccess"
+          git add -A
+          git diff --cached --exit-code || (
+            git commit -m "Update integrated data"
+            git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD:main
+          )
