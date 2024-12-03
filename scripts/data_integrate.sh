@@ -20,3 +20,5 @@ for file in "$INPUT_DIR"/*.csv; do
         echo "Appended data from $file"
     fi
 done
+
+echo "Integration complete."
