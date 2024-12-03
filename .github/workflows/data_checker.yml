@@ -30,8 +30,8 @@ jobs:
 
       - name: Run Calculation Script
         run: |
-          chmod u+x count_numbers.sh
-          outputs=$(./count_numbers.sh "$NUMBER_1" "$NUMBER_2")
+          chmod u+x data_integrate.sh
+          outputs=$(./data_integrate.sh "$NUMBER_1" "$NUMBER_2")
           echo "$outputs" > calculation_output.txt
 
       - name: Create report file
@@ -41,8 +41,8 @@ jobs:
 
       - name: Stage and Commit Report
         run: |
-          git config --global user.name "baloyi015"
-          git config --global user.email "tekgameus@gmail.com"
+          git config --global user.name "Nsuccess"
+          git config --global user.email "successnwachukwu368@gmail.com"
           git add report.txt
           git commit -m "Automated report"
 
