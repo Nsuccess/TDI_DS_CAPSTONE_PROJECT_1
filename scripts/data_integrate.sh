@@ -3,36 +3,22 @@
 # Define input and output paths
 INPUT_DIR="data-hub"
 OUTPUT_FILE="db/dataset.csv"
-LOG_FILE="integration.log"
 
-# Initialize or clear the log file
-echo "=== Data Integration Log ===" > "$LOG_FILE"
-echo "Integration started: $(date)" >> "$LOG_FILE"
-
-# Initialize the output file with a header
+# Initialize the output file with a header (if it doesn't already exist)
 HEADER="Application ID,Name,Email,Cohort,Submission Date"
-echo "$HEADER" > "$OUTPUT_FILE"
+if [ ! -f "$OUTPUT_FILE" ]; then
+    echo "$HEADER" > "$OUTPUT_FILE"
+fi
 
-# Process each CSV file in the input directory
+# Process each CSV file in the input directory, including data5.csv
 for file in "$INPUT_DIR"/*.csv; do
     if [[ -f $file ]]; then
-        echo "Processing $file..." | tee -a "$LOG_FILE"
+        echo "Processing $file..."
 
         # Skip the header row and append the data to the output file
         tail -n +2 "$file" >> "$OUTPUT_FILE"
-        echo "Appended data from $file" >> "$LOG_FILE"
-    else
-        echo "No CSV files found in $INPUT_DIR." >> "$LOG_FILE"
+        echo "Appended data from $file"
     fi
 done
 
-# Log the integration summary
-echo "Integration complete: $(date)" >> "$LOG_FILE"
-ROW_COUNT=$(wc -l < "$OUTPUT_FILE")
-echo "Total rows in integrated file (including header): $ROW_COUNT" >> "$LOG_FILE"
-
-# Preview the first few rows of the output
-echo "Preview of integrated file:" >> "$LOG_FILE"
-head -n 10 "$OUTPUT_FILE" >> "$LOG_FILE"
-
-echo "Log saved to $LOG_FILE."
+echo "Data integration complete."
