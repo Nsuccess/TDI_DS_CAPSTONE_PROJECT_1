@@ -32,4 +32,4 @@ if [ "$files_processed" = false ]; then
     exit 0
 fi
 
-echo "Integration complete."
+echo "Integration complete." 
