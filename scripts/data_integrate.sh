@@ -1,30 +1,38 @@
 #!/usr/bin/env bash
 
-# Path to data-hub folder
-data_hub="data-hub"
+# Define input and output paths
+INPUT_DIR="data-hub"
+OUTPUT_FILE="db/dataset.csv"
+LOG_FILE="integration.log"
 
-# Ensure db folder exists
-mkdir -p db
+# Initialize or clear the log file
+echo "=== Data Integration Log ===" > "$LOG_FILE"
+echo "Integration started: $(date)" >> "$LOG_FILE"
 
-# Check if data-hub exists
-if [ ! -d "$data_hub" ]; then
-  echo "Error: $data_hub folder does not exist."
-  exit 1
-fi
+# Initialize the output file with a header
+HEADER="Application ID,Name,Email,Cohort,Submission Date"
+echo "$HEADER" > "$OUTPUT_FILE"
 
-# Initialize header_written flag
-header_written=false
+# Process each CSV file in the input directory
+for file in "$INPUT_DIR"/*.csv; do
+    if [[ -f $file ]]; then
+        echo "Processing $file..." | tee -a "$LOG_FILE"
 
-# Integrate CSV files
-for file in "$data_hub"/*.csv; do
-  if [ -f "$file" ]; then
-    echo "Processing $file..."
-    if [ "$header_written" = false ]; then
-      head -n 1 "$file" > db/dataset.csv
-      header_written=true
+        # Skip the header row and append the data to the output file
+        tail -n +2 "$file" >> "$OUTPUT_FILE"
+        echo "Appended data from $file" >> "$LOG_FILE"
+    else
+        echo "No CSV files found in $INPUT_DIR." >> "$LOG_FILE"
     fi
-    tail -n +2 "$file" >> db/dataset.csv
-  fi
 done
 
-echo "Data integration complete."
+# Log the integration summary
+echo "Integration complete: $(date)" >> "$LOG_FILE"
+ROW_COUNT=$(wc -l < "$OUTPUT_FILE")
+echo "Total rows in integrated file (including header): $ROW_COUNT" >> "$LOG_FILE"
+
+# Preview the first few rows of the output
+echo "Preview of integrated file:" >> "$LOG_FILE"
+head -n 10 "$OUTPUT_FILE" >> "$LOG_FILE"
+
+echo "Log saved to $LOG_FILE."
