@@ -10,7 +10,7 @@ if [ ! -f "$OUTPUT_FILE" ]; then
     echo "$HEADER" > "$OUTPUT_FILE"
 fi
 
-# Process each CSV file in the input directory, including data5.csv
+# Process each CSV file in the input directory
 for file in "$INPUT_DIR"/*.csv; do
     if [[ -f $file ]]; then
         echo "Processing $file..."
@@ -20,5 +20,3 @@ for file in "$INPUT_DIR"/*.csv; do
         echo "Appended data from $file"
     fi
 done
-
-echo "Data integration complete."
