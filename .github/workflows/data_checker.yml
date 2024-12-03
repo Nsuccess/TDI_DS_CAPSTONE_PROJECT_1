@@ -1,29 +1,52 @@
-name: Automate Data Integration
+name: CI OUTPUTS
 
 on:
   push:
-    paths:
-      - 'data-hub/**'  # Trigger when any CSV file in data-hub/ is updated
+    branches: [main]
+
+permissions:
+  contents: write
 
 jobs:
-  data_integration:
+  log-numbers:
     runs-on: ubuntu-latest
+    outputs:
+      number_1: ${{ steps.num_1.outputs.number }}
+      number_2: ${{ steps.num_2.outputs.number }}
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - id: num_1
+        run: echo "number=12" >> "$GITHUB_OUTPUT"
+      - id: num_2
+        run: echo "number=34" >> "$GITHUB_OUTPUT"
 
-      - name: Run Data Integration Script
+  calc-output:
+    runs-on: ubuntu-latest
+    needs: log-numbers
+    env:
+      NUMBER_1: ${{ needs.log-numbers.outputs.number_1 }}
+      NUMBER_2: ${{ needs.log-numbers.outputs.number_2 }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run Calculation Script
         run: |
-          chmod +x scripts/data_integrate.sh
-          bash scripts/data_integrate.sh
+          chmod u+x count_numbers.sh
+          outputs=$(./count_numbers.sh "$NUMBER_1" "$NUMBER_2")
+          echo "$outputs" > calculation_output.txt
 
-      - name: Commit and Push Changes
+      - name: Create report file
+        run: |
+          date +"%Y-%m-%d %H:%M:%S" > report.txt
+          cat calculation_output.txt >> report.txt
+
+      - name: Stage and Commit Report
+        run: |
+          git config --global user.name "baloyi015"
+          git config --global user.email "tekgameus@gmail.com"
+          git add report.txt
+          git commit -m "Automated report"
+
+      - name: Push Changes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git config --global user.name "Nsuccess"
-          git config --global user.email "successnwachukwu368@gmail.com"
-          git pull origin main
-          git add db/dataset.csv 
-          git commit -m "Automated integration of datasets"
-          git push origin main
+        run: git push
