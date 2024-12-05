@@ -2,7 +2,7 @@ name: Data Checker
 
 on:
   # Allows manual triggering of the workflow
-  workflow_dispatch: 
+  # workflow_dispatch: 
   # Triggers the workflow on push to specific paths
   push:
     paths:
