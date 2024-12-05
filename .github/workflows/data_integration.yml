@@ -1,11 +1,12 @@
 name: Data Checker
 
-on: 
-  workflow_dispatch: # Use this when you are still testing the linter 
+on:
+  workflow_dispatch: # Allows manual triggering of the workflow
   push:
     paths:
       - 'data-hub/'
       - 'scripts/'
+
 
   pull_request:
     paths:
