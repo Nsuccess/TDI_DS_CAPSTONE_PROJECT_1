@@ -1,7 +1,7 @@
 name: Data Checker
 
-on:
-    workflow_dispatch: Use this when you are still testing the linter 
+on: 
+  workflow_dispatch: # Use this when you are still testing the linter 
   push:
     paths:
       - 'data-hub/'
@@ -14,6 +14,22 @@ permissions:
   contents: write
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      # Step 1: Checkout repository
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Step 2: Install ShellCheck
+      - name: Install ShellCheck
+        run: sudo apt-get install shellcheck
+
+      # Step 3: Run ShellCheck on scripts
+      - name: Run Linter
+        run: shellcheck scripts/*.sh
+
+
   monitor_changes:
     runs-on: ubuntu-latest
     # needs:  lint
