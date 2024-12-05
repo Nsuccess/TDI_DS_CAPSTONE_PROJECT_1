@@ -1,17 +1,21 @@
-name: Data Checker
+name: Project Workflow
 
 on:
   # Allows manual triggering of the workflow
-  workflow_dispatch: 
-  # Triggers the workflow on push to specific paths
-  push: main
+  workflow_dispatch:
+  # Triggers the workflow on push to the main branch and specific paths
+  push:
+    branches:
+      - main
     paths:
-      - 'data-hub/'
-      - 'scripts/'
-  # Triggers on pull request affecting specific paths
-  pull_request: main
+      - 'data-hub/**'
+      - 'scripts/**'
+  # Triggers on pull request affecting specific paths on main
+  pull_request:
+    branches:
+      - main
     paths:
-      - 'data-hub/'
+      - 'data-hub/**'
 
 permissions:
   contents: write
@@ -41,8 +45,8 @@ jobs:
         with:
           filters: |
             data:
-              - 'data-hub/’
-              - 'db/'
+              - 'data-hub/**'
+              - 'db/**'
 
       - name: Print Changed Folders
         run: |
@@ -65,11 +69,11 @@ jobs:
         run: wc -l db/database.csv
 
       - name: Commit and Push Changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --global user.name "Nsuccess"
           git config --global user.email "successnwachukwu368@gmail.com"
           git add db/database.csv
           git commit -m "Automated Integration Script"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          run:  git push main
+          git push origin main
