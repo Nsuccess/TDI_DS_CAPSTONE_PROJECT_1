@@ -1,7 +1,7 @@
 name: Data Checker
 
 on:
-  # workflow_dispatch: Use this when you are still testing the linter 
+    workflow_dispatch: Use this when you are still testing the linter 
   push:
     paths:
       - 'data-hub/'
