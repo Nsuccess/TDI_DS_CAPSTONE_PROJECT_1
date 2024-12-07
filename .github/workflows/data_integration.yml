@@ -3,17 +3,17 @@ name: Project Workflow
 on:
   # Allows manual triggering of the workflow
   workflow_dispatch:
-  # Triggers the workflow on push to the main branch and specific paths
+  # Triggers the workflow on push to the master branch and specific paths
   push:
     branches:
-      - main
+      - master
     paths:
       - 'data-hub/**'
       - 'scripts/**'
-  # Triggers on pull request affecting specific paths on main
+  # Triggers on pull request affecting specific paths on master
   pull_request:
     branches:
-      - main
+      - master
     paths:
       - 'data-hub/**'
 
@@ -76,4 +76,4 @@ jobs:
           git config --global user.email "successnwachukwu368@gmail.com"
           git add db/database.csv
           git commit -m "Automated Integration Script"
-          git push origin main
+          git push origin master
